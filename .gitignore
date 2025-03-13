@@ -1,0 +1,28 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn.lock
+package-lock.json
+
+# Playwright test results and reports
+playwright-report/
+test-results/
+
+# Playwright downloaded browsers
+playwright/.cache/
+playwright/.browsers/
+playwright/.chromium/
+playwright/.firefox/
+playwright/.webkit/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
