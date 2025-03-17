@@ -17,20 +17,44 @@ test.describe("Swag Labs E2E test", async () => {
     await expect(page).toHaveTitle(/Swag Labs/);
   });
 
-  test("thest if the menu button works as expected", async ({ page }) => {
-    await page.getByRole("button", { name: "Open Menu" }).click(); //from here i test the menu. put it in the right test after
+  test("test if Menu button works as expected", async ({ page }) => {
+    await page.getByRole("button", { name: "Open Menu" }).click();
     await expect(page.locator(".bm-menu")).toBeVisible();
   });
 
-  test("thest the menu about link", async ({ page }) => {
-    await page.getByRole("button", { name: "Open Menu" }).click(); //from here i test the menu. put it in the right test after
+  test("test About menu link", async ({ page }) => {
+    await page.getByRole("button", { name: "Open Menu" }).click();
     await expect(page.locator(".bm-menu")).toBeVisible();
     await page.locator('[data-test="about-sidebar-link"]').click();
     await expect(page).toHaveURL("https://saucelabs.com/");
   });
 
-  test("menu works as expected and all the links inside", async ({ page }) => {
-    await page.locator().getByRole("button", { name: "Open Menu" }).click();
+  test("test Logout button inside menu", async ({ page }) => {
+    await page.getByRole("button", { name: "Open Menu" }).click();
+    await expect(page.locator(".bm-menu")).toBeVisible();
+    await page.locator('[data-test="logout-sidebar-link"]').click();
+    await expect(page).toHaveTitle(/Swag Labs/);
+  });
+
+  test("test Reset app state button inside menu", async ({ page }) => {
+    await page.locator('[data-test="item-4-title-link"]').click();
+    await expect(page).toHaveURL(
+      "https://www.saucedemo.com/inventory-item.html?id=4"
+    );
+    await page.locator('[data-test="add-to-cart"]').click();
+    await expect(page.locator('[data-test="shopping-cart-link"]')).toHaveText(
+      "1"
+    );
+    await page.getByRole("button", { name: "Open Menu" }).click();
+    await expect(page.locator(".bm-menu")).toBeVisible();
+    await page.locator('[data-test="reset-sidebar-link"]').click();
+    await expect(page.locator('[data-test="shopping-cart-link"]')).toHaveText(
+      ""
+    );
+    //found a bug on a page connected to remove button on this step. will add code for taking a screenshot
+    await page.screenshot({ path: "./screenshots/screenshot.png" });
+    await page.locator('[data-test="inventory-sidebar-link"]').click();
+    await expect(page).toHaveTitle(/Swag Labs/);
   });
 
   test("test filter", async ({ page }) => {
