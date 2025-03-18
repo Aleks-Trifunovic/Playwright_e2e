@@ -57,36 +57,61 @@ test.describe("Swag Labs E2E test", async () => {
     await expect(page).toHaveTitle(/Swag Labs/);
   });
 
-  test("test filter", async ({ page }) => {
-    //tests here
-  });
+  test("test filter", async ({ page }) => {});
 
   test("user can add items to cart and checkout", async ({ page }) => {
-    await page.goto("https://www.saucedemo.com/");
-    //   await page.locator(add to cart first button here).click();
-    //here you check the cart does it have a notification of 1
-    //here you add a few more items and see if the cart not.is updated
-    //here you remove an item and see if the cart updates
-    //here you remove all and see if it updates
-    //here you add one and go to cart and expect that the right one is there and that the right qty is shown
-    //here you proceed to checkout
-    //here you try to continue without info
-    //here you check the error is there
-    //here you input the info
-    //here you click on continue
-    //here you expect that info is shown on the screen
-    //here you cancel
-    //here you finish
-    //here you expect the thank you screen
-    //here you click on the back home button
-    //here you expect the starting url
+    await page.locator('[data-test="item-4-title-link"]').click();
+    await page.locator('[data-test="add-to-cart"]').click();
+    await expect(page.locator('[data-test="shopping-cart-link"]')).toHaveText(
+      "1"
+    );
+    await page.locator('[data-test="shopping-cart-link"]').click();
+    await expect(page.locator('[data-test="item-4-title-link"]')).toBeVisible();
+    await expect(page.locator('[data-test="item-quantity"]')).toHaveText("1");
+    await page.locator('[data-test="continue-shopping"]').click();
+    await expect(
+      page.locator('[data-test="remove-sauce-labs-backpack"]')
+    ).toBeVisible();
+    await page.locator('[data-test="remove-sauce-labs-backpack"]').click();
+    await expect(page.locator('[data-test="shopping-cart-link"]')).toHaveText(
+      ""
+    );
+    await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+    await page.locator('[data-test="shopping-cart-link"]').click();
+  });
+
+  test("test checkout flow", async ({ page }) => {
+    await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
+    await page.locator('[data-test="shopping-cart-link"]').click();
+    await page.locator('[data-test="checkout"]').click();
+    await page.locator('[data-test="firstName"]').click();
+    await page.locator('[data-test="firstName"]').fill("John");
+    await page.locator('[data-test="lastName"]').click();
+    await page.locator('[data-test="lastName"]').fill("Doe");
+    await page.locator('[data-test="postalCode"]').click();
+    await page.locator('[data-test="postalCode"]').fill("121212");
+    await page.locator('[data-test="continue"]').click();
+    await expect(page).toHaveURL(
+      "https://www.saucedemo.com/checkout-step-two.html"
+    );
+    await expect(page.locator('[data-test="payment-info-label"]')).toHaveText(
+      "Payment Information:"
+    );
+    await expect(page.locator('[data-test="shipping-info-label"]')).toHaveText(
+      "Shipping Information:"
+    );
+    await expect(page.locator('[data-test="total-info-label"]')).toHaveText(
+      "Price Total"
+    );
+    await page.locator('[data-test="finish"]').click();
+    await expect(page).toHaveURL(
+      "https://www.saucedemo.com/checkout-complete.html"
+    );
+    await page.locator('[data-test="back-to-products"]').click();
+    await expect(page).toHaveURL("https://www.saucedemo.com/inventory.html");
   });
 
   test("test footer", async ({ page }) => {
     //tests here
   });
 });
-
-//TODO:
-//1. take screenshot
-//2.
